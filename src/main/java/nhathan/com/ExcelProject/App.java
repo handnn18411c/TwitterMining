@@ -23,6 +23,8 @@ public class App {
 		  .setOAuthAccessToken("1362444246339383300-LJOdqgDAx3sW5g0Cv3CEAq7b9ZnmlF")
 		  .setOAuthAccessTokenSecret("dGqqFX3z9UBNhCILTF8YZNF7Zt3R8DHi5xDamx8W1vzx8");
 		long start = System.currentTimeMillis();
+		String [] lstKeyWord= {"bitcoin","ethereum","binance","dogecoin","cardano","tether",
+						"polkadot","bitcoin cash","lifecoin"};
 		WriteExcelTweet writeTweet = new WriteExcelTweet();
 		StatusListener listener = new StatusListener() {
 			public void onStatus(Status status) {
@@ -30,21 +32,23 @@ public class App {
 				if(end - start >= 3600000*4) System.exit(0);
 				String text = status.getText();	
 				if(!text.startsWith("RT") ) {
-					// Chỉnh từ khóa ở đây					
-					if(text.toLowerCase().contains("love") && status.getPlace()!=null) {
-						int favoriteCount = status.getFavoriteCount();
-						int retweetCount = status.getRetweetCount();
-						String place = checkPlace(status);
-						String userLocation = checkUserLocation(status);
-						ArrayList<String> hashtag = checkHashtagEntities(status);
-						Tweet newTweet = new Tweet(text, favoriteCount, retweetCount, place, userLocation, hashtag);
-						// Chỉnh tên file xuất ra ở đây 
-						writeTweet.writeToExcel(newTweet, "love_tweets.xlsx");
-						writeTweet.increaseRowNum();
-//						System.out.println(newTweet.toString());
-//						System.out.println(status);
-						System.out.println("Complete add row " + writeTweet.getRowNum());
-//						System.out.println(status.getHashtagEntities()[0].getText());
+					for(String keyword: lstKeyWord) {
+						// Chỉnh từ khóa ở đây					
+						if(text.toLowerCase().contains(keyword)) {
+							int favoriteCount = status.getFavoriteCount();
+							int retweetCount = status.getRetweetCount();
+							String place = checkPlace(status);
+							String userLocation = checkUserLocation(status);
+							ArrayList<String> hashtag = checkHashtagEntities(status);
+							Tweet newTweet = new Tweet(text, favoriteCount, retweetCount, place, userLocation, hashtag);
+							// Chỉnh tên file xuất ra ở đây 
+							writeTweet.writeToExcel(newTweet, "crypto_tweet.xlsx");
+							writeTweet.increaseRowNum();
+//							System.out.println(newTweet.toString());
+//							System.out.println(status);
+							System.out.println("Complete add row " + writeTweet.getRowNum());
+//							System.out.println(status.getHashtagEntities()[0].getText());
+						}
 					}
 				}		
 			}
