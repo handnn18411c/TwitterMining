@@ -31,7 +31,7 @@ public class App {
 				String text = status.getText();	
 				if(!text.startsWith("RT") ) {
 					// Chỉnh từ khóa ở đây					
-					if(text.toLowerCase().contains("love")) {
+					if(text.toLowerCase().contains("love") && status.getPlace()!=null) {
 						int favoriteCount = status.getFavoriteCount();
 						int retweetCount = status.getRetweetCount();
 						String place = checkPlace(status);
